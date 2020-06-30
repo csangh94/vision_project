@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.min.js" ></script>
+<script type="text/javascript">
+$(function () {
+    $('button').click(function () {
+        $('div').append($('input').val())
+        $.ajax({
+                type: 'GET',
+                url: 'insert/',
+                data:{
+                  style : $('input').val()
+                },
+                success: function (result) {
+                    alert("입력 완료!")
+
+                }
+                })
+        })
+})
+</script>
+</head>
+<body>
+
+{% if list.user|length < 5%}
+<h1 align="center">마음에 드는 인테리어 클릭</h1>
+<table align="center">
+    <tr>
+        {% for x in list.photo %}
+        <td width="300" height="300">
+            <a href="{% url 'main' %}">
+                <button>
+                    <img src="{{x.img}}" width="300" height="300">
+                    <input type="text" hidden value="{{x.style}}">
+                </button>
+            </a></td>
+        {% endfor %}
+    </tr>
+</table>
+{% else %}
+<h1 align="center">당신이 많이 선택한 스타일!!</h1>
+<hr>
+    <table align="center">
+        <tr><td><h2 align="center">{{list.best.user}}</h2></td></tr>
+        <tr>
+            <td><img src="{{ list.best.img}}"></td>
+        </tr>
+        <tr><td><h2 align="center" style="color:red;">{{list.best.user}}중 가장 많이 사용된 상품 :{{list.best_style.name}}>>{{list.best_style.count}}</h2></td></tr>
+    </table>
+{% endif %}
+<hr>
+<div></div>
+</body>
+</html>
